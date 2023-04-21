@@ -99,6 +99,7 @@ flutter:
     - assets/lottie_animations/
     - assets/rive_animations/
     - assets/pdfs/
+    - assets/MyDatabase.db3
   fonts:
     - family: 'myfont'
       fonts:
