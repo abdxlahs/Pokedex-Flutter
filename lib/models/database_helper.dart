@@ -57,5 +57,11 @@ class DatabaseHelper {
     return await db.rawQuery(query, args);
   }
 
+  Future<List<Map<String, dynamic>>> customQuerywithlistparameters(String query, [List<dynamic>? params]) async {
+  Database db = await instance.database;
+  return await db.rawQuery(query, params);
+}
+
+
 
 }

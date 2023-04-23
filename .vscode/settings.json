@@ -5,6 +5,8 @@
         "Pokèmon",
         "pokemontypes",
         "secondtype",
-        "sqflite"
+        "sqflite",
+        "Typeno",
+        "typenumber"
     ]
 }

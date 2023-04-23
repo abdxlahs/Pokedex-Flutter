@@ -16,6 +16,7 @@ class MyPokemonCard extends StatefulWidget {
 
 class _MyPokemonCardState extends State<MyPokemonCard> {
   late Future<String> typeName;
+  late String h;
   late Future<String> type2Name;
 
   @override

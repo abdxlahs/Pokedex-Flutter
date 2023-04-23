@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:pokedex/models/database_helper.dart';
 import 'package:pokedex/models/myPokemonCardUI.dart';
-import 'package:pokedex/models/Pokemontypes.dart';
+import 'package:pokedex/pages/Pokemontypes.dart';
 
 
 
@@ -51,6 +51,48 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   }
+  Color getAvatarColor(String typeName) {
+    switch (typeName) {
+      case 'fire':
+      return Color(0xFFFF5722-0x2);
+    case 'water':
+      return Color(0xFF2196F3);
+    case 'grass':
+      return Color(0xFF4CAF50);
+    case 'electric':
+      return Color(0xFFFFEB3B);
+    case 'psychic':
+      return Color(0xFFF44336);
+    case 'dragon':
+      return Color(0xFF673AB7);
+    case 'normal':
+      return Color(0xFF9E9E9E);
+    case 'fighting':
+      return Color(0xFFD84315);
+    case 'flying':
+      return Color(0xFF90CAF9);
+    case 'poison':
+      return Color(0xFF9C27B0);
+    case 'ground':
+      return Color(0xFF795548);
+    case 'rock':
+      return Color(0xFF607D8B);
+    case 'bug':
+      return Color(0xFF8BC34A);
+    case 'ghost':
+      return Color(0xFF7B1FA2);
+    case 'steel':
+      return Color(0xFF9E9E9E);
+    case 'fairy':
+      return Color(0xFFF48FB1);
+    case 'dark':
+      return Color(0xFF212121);
+    case 'ice':
+      return Color(0xFF80D8FF);
+    default:
+      return Color(0xFFFFCB05);
+    }
+  }
   void settingModalBottomSheet(context,List<String> typename){
     showModalBottomSheet(
       context: context,
@@ -73,6 +115,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor:getAvatarColor('${typename[index]}') ),
                   onPressed: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  SortTypes(typename:'${typename[index]}' )),);
 
                   },
                   child: Container(
