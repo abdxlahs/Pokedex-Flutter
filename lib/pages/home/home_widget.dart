@@ -133,8 +133,11 @@ class _HomeWidgetState extends State<HomeWidget> {
       ],
     ),
     child: TextField(
+      style: TextStyle(color: Colors.black),
+  
       controller: _searchController,
       decoration: InputDecoration(
+        fillColor: Colors.black,
         hintText: 'Search Pokèmon by name',
         hintStyle: TextStyle(color: Colors.grey),
         contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
