@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:provider/single_child_widget.dart';
+
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -9,10 +11,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:pokedex/models/database_helper.dart';
-import 'package:pokedex/models/CardUI.dart';
+import 'package:pokedex/models/myPokemonCardUI.dart';
+import 'package:pokedex/models/Pokemontypes.dart';
+
+
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
+  
 
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
@@ -22,8 +28,12 @@ class _HomeWidgetState extends State<HomeWidget> {
   late Future<List<Map<String, dynamic>>> _data;
   late Future<List<Map<String, dynamic>>> _types;
   late Future<List<Map<String, dynamic>>> _custom;
+  late Future<List<Map<String, dynamic>>> name;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  List<String> typename=[];
+
+  
 
   @override
   void initState() {
@@ -34,7 +44,58 @@ class _HomeWidgetState extends State<HomeWidget> {
   Future<void> _fetchData() async {
     _data = DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon');
     _types = DatabaseHelper.instance.customQuery('SELECT * FROM Types');
+
+    List<Map<String, dynamic>> result = await DatabaseHelper.instance.customQuery('SELECT name FROM Types');
+    for (Map<String, dynamic> row in result) {
+        this.typename.add(row['name']);
   }
+
+  }
+  void settingModalBottomSheet(context,List<String> typename){
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: ListView.builder(
+            itemCount: typename.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:getAvatarColor('${typename[index]}') ),
+                  onPressed: () {
+
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Center(
+                      child: Text(
+                        '${typename[index]}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+    
+}
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +157,34 @@ class _HomeWidgetState extends State<HomeWidget> {
     ),
   ),
 ),
+SizedBox(height: 10),
+          Row(
+            children: [
+             ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.grey,
+    shadowColor: Colors.black.withOpacity(0.1),
+    elevation: 5,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(32),
+    ),
+    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+  ),
+  onPressed: () {
+    settingModalBottomSheet(context,this.typename);
+  },
+    
+  child: Text(
+                'Sort by types',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            ],
+          ),
+          SizedBox(height: 10),
           Expanded(
             child: FutureBuilder<List<Map<String, dynamic>>>(
               future: _data,
@@ -141,3 +230,4 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
   }
 }
+

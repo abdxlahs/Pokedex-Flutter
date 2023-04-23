@@ -41,7 +41,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
 
 
 
-  Color _getAvatarColor(String typeName) {
+  Color getAvatarColor(String typeName) {
     switch (typeName) {
       case 'fire':
       return Color(0xFFFF5722-0x2);
@@ -99,7 +99,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
           width: double.infinity,
           height: 300,
           child:Card(
-          color: (_getAvatarColor(typeName)),
+          color: (getAvatarColor(typeName)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
@@ -120,7 +120,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                 Padding(
                   padding: EdgeInsets.only(top:0.5),
                     child: CircleAvatar(
-                    backgroundColor: _getAvatarColor(typeName),
+                    backgroundColor: getAvatarColor(typeName),
                     backgroundImage: NetworkImage(widget.imageUrl),
                     radius: 75,
                 ),
@@ -143,7 +143,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                       color:  Colors.white,
                       width: 2.0,
                       ),
-                      color: _getAvatarColor(typeName), // Change this to the background color you want
+                      color: getAvatarColor(typeName), // Change this to the background color you want
                       borderRadius: BorderRadius.circular(12.0),),
                      
                     child : Text(
@@ -157,10 +157,10 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                       padding: type2Name!='0'? EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.1):EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                       decoration: BoxDecoration(
                         border: Border.all(
-                        color: type2Name!='0'? Colors.white : _getAvatarColor(typeName),
+                        color: type2Name!='0'? Colors.white : getAvatarColor(typeName),
                         width: 2.0,
                         ),
-                        color: _getAvatarColor(typeName), // Change this to the background color you want
+                        color: getAvatarColor(typeName), // Change this to the background color you want
                         borderRadius: BorderRadius.circular(12.0),),
                        
                       child : Text(
