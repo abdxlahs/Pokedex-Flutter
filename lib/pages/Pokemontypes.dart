@@ -37,39 +37,49 @@ class _SortTypesState extends State<SortTypes> {
   }
 
     @override
+    @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: FutureBuilder<List<Map<String, dynamic>>>(
-        future: initialization,
-        builder: (BuildContext context,
-            AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
-            final data = snapshot.data!;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.typename),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: initialization,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  final data = snapshot.data!;
 
-            return ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (BuildContext context, int index) {
-                var type2 = data[index]['type2'];
-                print(type2);
-                if (type2 == null) {
-                  type2 = 0;
+                  return ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var type2 = data[index]['type2'];
+                      print(type2);
+                      if (type2 == null) {
+                        type2 = 0;
+                      }
+                      return MyPokemonCard(
+                        name: data[index]['name'].toString(),
+                        id: data[index]['id'].toString(),
+                        imageUrl: data[index]['image_url'].toString(),
+                        type: data[index]['type1'],
+                        type2: type2,
+                      );
+                    },
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
                 }
-                return MyPokemonCard(
-                  name: data[index]['name'].toString(),
-                  id: data[index]['id'].toString(),
-                  imageUrl: data[index]['image_url'].toString(),
-                  type: data[index]['type1'],
-                  type2: type2,
-                );
               },
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }

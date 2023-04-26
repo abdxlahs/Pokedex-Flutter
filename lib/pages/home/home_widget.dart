@@ -234,6 +234,7 @@ SizedBox(height: 10),
           ),
           SizedBox(height: 10),
           Expanded(
+            flex: 1,
             child: FutureBuilder<List<Map<String, dynamic>>>(
               future: _data,
               builder: (BuildContext context,
