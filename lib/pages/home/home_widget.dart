@@ -2,14 +2,7 @@ import 'dart:async';
 import 'package:provider/single_child_widget.dart';
 
 import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:pokedex/models/database_helper.dart';
 import 'package:pokedex/models/myPokemonCardUI.dart';
 import 'package:pokedex/pages/Pokemontypes.dart';
@@ -32,7 +25,10 @@ class _HomeWidgetState extends State<HomeWidget> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   List<String> typename=[];
-
+  bool _isSortedAlphabetically = false;
+  String _sortingCriteria = '';
+  String  statistic_val='';
+  
   
 
   @override
@@ -117,9 +113,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   onPressed: () {
                     Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>  SortTypes(typename:'${typename[index]}' )),);
-
-                  },
+                            MaterialPageRoute(builder: (context) =>  SortTypes(typename:'${typename[index]}' )),);},
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 12),
                     child: Center(
@@ -141,6 +135,65 @@ class _HomeWidgetState extends State<HomeWidget> {
     );
     
 }
+  void _showSortingBottomSheet(context) {
+    List<String> stats=["hp","speed","defence","attack","sp_defence","sp_attack"];
+    
+    
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: ListView.builder(
+            itemCount: stats.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:Colors.grey ),
+                  onPressed: () async {
+
+                    setState(() {
+                      statistic_val=stats[index];
+                    _data = DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon order by "${statistic_val}" DESC');  
+                    });
+                    
+                   },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Center(
+                      child: Text(
+                        '${stats[index]}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+    
+
+
+  
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -152,12 +205,38 @@ class _HomeWidgetState extends State<HomeWidget> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
-              _searchQuery = _searchController.text;
+             _searchQuery = _searchController.text;
               setState(() {
                 _fetchData();
               });
             },
           ),
+          IconButton(
+          icon: Icon(Icons.sort_by_alpha_outlined),
+          onPressed: () async {
+                    if (_isSortedAlphabetically) {
+                      _data = DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon');
+                    } else {
+                      _data = DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon order by name ASC');
+                    }
+                    setState(() {
+                      _isSortedAlphabetically = !_isSortedAlphabetically;
+                    });
+                  },
+        ),
+        IconButton(
+          icon: Icon(Icons.sort_sharp),
+          onPressed: () async {
+                    if (_isSortedAlphabetically) {
+                      _data = DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon');
+                    } else {
+                      _data = DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon order  by Pokedex_number DESC');
+                    }
+                    setState(() {
+                      _isSortedAlphabetically = !_isSortedAlphabetically;
+                    });
+                  },
+        ),
         ],
       ),
       body: Column(
@@ -230,6 +309,53 @@ SizedBox(height: 10),
                 ),
               ),
             ),
+
+
+Padding(
+  padding: const EdgeInsets.only(left: 100),
+  child:   ElevatedButton(
+  
+    style: ElevatedButton.styleFrom(
+  
+      backgroundColor: Colors.grey,
+  
+      shadowColor: Colors.black.withOpacity(0.1),
+  
+      elevation: 5,
+  
+      shape: RoundedRectangleBorder(
+  
+        borderRadius: BorderRadius.circular(32),
+  
+      ),
+  
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+  
+    ),
+  
+    onPressed: () {
+   _showSortingBottomSheet(context);
+      },
+  
+      
+  
+    child: Text(
+  
+                  'Sort by Statistics',
+  
+                  style: TextStyle(
+  
+                    fontSize: 16,
+  
+                    fontWeight: FontWeight.w600,
+  
+                  ),
+  
+                ),
+  
+              ),
+),
+            
             ],
           ),
           SizedBox(height: 10),
@@ -261,10 +387,11 @@ SizedBox(height: 10),
                       }
                       return MyPokemonCard(
                         name: filteredData[index]['name'].toString(),
-                        id: filteredData[index]['id'].toString(),
+                        id: filteredData[index]['pokedex_number'].toString(),
                         imageUrl: filteredData[index]['image_url'].toString(),
                         type: filteredData[index]['type1'],
                         type2: type2,
+                        statistic_val: statistic_val 
                       );
                     },
                   );

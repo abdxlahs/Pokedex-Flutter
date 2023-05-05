@@ -66,6 +66,12 @@ dependencies:
   sqflite: 2.2.0+2
   timeago: 3.2.2
   url_launcher: 6.1.5
+  analyzer: 5.2.0
+  dcdg: 4.0.0
+dependency_overrides:
+  analyzer: ^2.6.0
+
+
 
 
   # The following adds the Cupertino Icons font to your application.

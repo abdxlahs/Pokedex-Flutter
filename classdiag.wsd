@@ -1,0 +1,962 @@
+@startuml
+set namespaceSeparator ::
+
+abstract class "pokedex::auth::auth_manager.dart::AuthManager" {
+  +Future<dynamic> signOut()
+  +Future<dynamic> deleteUser()
+  +Future<dynamic> resetPassword()
+  +Future<dynamic> sendEmailVerification()
+}
+
+abstract class "pokedex::auth::auth_manager.dart::EmailSignInManager" {    
+  +Future<BaseAuthUser?> signInWithEmail()
+  +Future<BaseAuthUser?> createAccountWithEmail()
+}
+
+abstract class "pokedex::auth::auth_manager.dart::AnonymousSignInManager" {
+  +Future<BaseAuthUser?> signInAnonymously()
+}
+
+abstract class "pokedex::auth::auth_manager.dart::AppleSignInManager" {    
+  +Future<BaseAuthUser?> signInWithApple()
+}
+
+abstract class "pokedex::auth::auth_manager.dart::GoogleSignInManager" {
+  +Future<BaseAuthUser?> signInWithGoogle()
+}
+
+abstract class "pokedex::auth::auth_manager.dart::JwtSignInManager" {
+  +Future<BaseAuthUser?> signInWithJwtToken()
+}
+
+abstract class "pokedex::auth::auth_manager.dart::PhoneSignInManager" {
+  +Future<dynamic> beginPhoneAuth()
+  +Future<dynamic> verifySmsCode()
+}
+
+abstract class "pokedex::auth::auth_manager.dart::FacebookSignInManager" {
+  +Future<BaseAuthUser?> signInWithFacebook()
+}
+
+abstract class "pokedex::auth::auth_manager.dart::MicrosoftSignInManager" {
+  +Future<BaseAuthUser?> signInWithMicrosoft()
+}
+
+class "pokedex::auth::base_auth_user_provider.dart::AuthUserInfo" {
+  +String? uid
+  +String? email
+  +String? displayName
+  +String? photoUrl
+  +String? phoneNumber
+}
+
+abstract class "pokedex::auth::base_auth_user_provider.dart::BaseAuthUser" {
+  +bool loggedIn
+  +bool emailVerified
+  +AuthUserInfo authUserInfo
+  +String? uid
+  +String? email
+  +String? displayName
+  +String? photoUrl
+  +String? phoneNumber
+  +Future<dynamic>? delete()
+  +Future<dynamic>? sendEmailVerification()
+}
+
+"pokedex::auth::base_auth_user_provider.dart::BaseAuthUser" o-- "pokedex::auth::base_auth_user_provider.dart::AuthUserInfo"
+
+class "pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager" {
+  -String? _phoneAuthVerificationCode
+  -ConfirmationResult? _webPhoneAuthConfirmationResult
+  +Future<dynamic> signOut()
+  +Future<dynamic> deleteUser()
+  +Future<dynamic> resetPassword()
+  +Future<BaseAuthUser?> signInWithEmail()
+  +Future<BaseAuthUser?> createAccountWithEmail()
+  +Future<BaseAuthUser?> signInAnonymously()
+  +Future<BaseAuthUser?> signInWithApple()
+  +Future<BaseAuthUser?> signInWithGoogle()
+  +Future<BaseAuthUser?> signInWithJwtToken()
+  +Future<dynamic> beginPhoneAuth()
+  +Future<dynamic> verifySmsCode()
+  -Future<BaseAuthUser?> _signInOrCreateAccount()
+}
+
+"pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager" o-- "firebase_auth::firebase_auth.dart::ConfirmationResult"
+"pokedex::auth::auth_manager.dart::AuthManager" <|-- "pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager"
+"pokedex::auth::auth_manager.dart::EmailSignInManager" <|-- "pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager"
+"pokedex::auth::auth_manager.dart::AnonymousSignInManager" <|-- "pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager"
+"pokedex::auth::auth_manager.dart::AppleSignInManager" <|-- "pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager"
+"pokedex::auth::auth_manager.dart::GoogleSignInManager" <|-- "pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager"
+"pokedex::auth::auth_manager.dart::JwtSignInManager" <|-- "pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager"
+"pokedex::auth::auth_manager.dart::PhoneSignInManager" <|-- "pokedex::auth::firebase_auth::firebase_auth_manager.dart::FirebaseAuthManager"
+
+class "pokedex::auth::firebase_auth::firebase_user_provider.dart::PokedexFirebaseUser" {
+  +User? user
+  +bool loggedIn
+  +AuthUserInfo authUserInfo
+  +bool emailVerified
+  +Future<dynamic>? delete()
+  +Future<dynamic>? sendEmailVerification()
+  {static} +BaseAuthUser fromUserCredential()
+  {static} +BaseAuthUser fromFirebaseUser()
+}
+
+"pokedex::auth::firebase_auth::firebase_user_provider.dart::PokedexFirebaseUser" o-- "firebase_auth::firebase_auth.dart::User"
+"pokedex::auth::firebase_auth::firebase_user_provider.dart::PokedexFirebaseUser" o-- "pokedex::auth::base_auth_user_provider.dart::AuthUserInfo"
+"pokedex::auth::base_auth_user_provider.dart::BaseAuthUser" <|-- "pokedex::auth::firebase_auth::firebase_user_provider.dart::PokedexFirebaseUser"
+
+class "pokedex::backend::backend.dart::FFFirestorePage" {
+  +List<T> data
+  +Stream<List<T>>? dataStream
+  +QueryDocumentSnapshot<Object?>? nextPageMarker
+}
+
+"pokedex::backend::backend.dart::FFFirestorePage" o-- "dart::async::Stream<List<T>>"
+"pokedex::backend::backend.dart::FFFirestorePage" o-- "cloud_firestore::cloud_firestore.dart::QueryDocumentSnapshot<Object>"
+
+abstract class "pokedex::backend::schema::pokedex_record.dart::PokedexRecord" {
+  {static} +Serializer<PokedexRecord> serializer
+  +String? email
+  +String? displayName
+  +String? photoUrl
+  +String? uid
+  +DateTime? createdTime
+  +String? phoneNumber
+  +DateTime? editedTime
+  +String? bio
+  +String? userName
+  +DocumentReference<Object?>? ffRef
+  +DocumentReference<Object?> reference
+  {static} +CollectionReference<Object?> collection
+  {static} -void _initializeBuilder()
+  {static} +Stream<PokedexRecord> getDocument()
+  {static} +Future<PokedexRecord> getDocumentOnce()
+  {static} +PokedexRecord getDocumentFromData()
+}
+
+"pokedex::backend::schema::pokedex_record.dart::PokedexRecord" o-- "built_value::serializer.dart::Serializer<PokedexRecord>"
+"pokedex::backend::schema::pokedex_record.dart::PokedexRecord" o-- "cloud_firestore::cloud_firestore.dart::DocumentReference<Object>"
+"pokedex::backend::schema::pokedex_record.dart::PokedexRecord" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference<Object>"
+"built_value::built_value.dart::Built" <|-- "pokedex::backend::schema::pokedex_record.dart::PokedexRecord"
+
+class "pokedex::backend::schema::pokedex_record.dart::_$PokedexRecordSerializer" {
+  +Iterable<Type> types
+  +String wireName
+  +Iterable<Object?> serialize()
+  +PokedexRecord deserialize()
+}
+
+"built_value::serializer.dart::StructuredSerializer" <|-- "pokedex::backend::schema::pokedex_record.dart::_$PokedexRecordSerializer"
+
+class "pokedex::backend::schema::pokedex_record.dart::_$PokedexRecord" {
+  +String? email
+  +String? displayName
+  +String? photoUrl
+  +String? uid
+  +DateTime? createdTime
+  +String? phoneNumber
+  +DateTime? editedTime
+  +String? bio
+  +String? userName
+  +DocumentReference<Object?>? ffRef
+  +int hashCode
+  +PokedexRecord rebuild()
+  +PokedexRecordBuilder toBuilder()
+  +bool ==()
+  +String toString()
+}
+
+"pokedex::backend::schema::pokedex_record.dart::_$PokedexRecord" o-- "cloud_firestore::cloud_firestore.dart::DocumentReference<Object>"
+"pokedex::backend::schema::pokedex_record.dart::PokedexRecord" <|-- "pokedex::backend::schema::pokedex_record.dart::_$PokedexRecord"
+
+class "pokedex::backend::schema::pokedex_record.dart::PokedexRecordBuilder" {
+  -_$PokedexRecord? _$v
+  -String? _email
+  -String? _displayName
+  -String? _photoUrl
+  -String? _uid
+  -DateTime? _createdTime
+  -String? _phoneNumber
+  -DateTime? _editedTime
+  -String? _bio
+  -String? _userName
+  -DocumentReference<Object?>? _ffRef
+  +String? email
+  +String? displayName
+  +String? photoUrl
+  +String? uid
+  +DateTime? createdTime
+  +String? phoneNumber
+  +DateTime? editedTime
+  +String? bio
+  +String? userName
+  +DocumentReference<Object?>? ffRef
+  -PokedexRecordBuilder _$this
+  +void replace()
+  +void update()
+  +PokedexRecord build()
+  -_$PokedexRecord _build()
+}
+
+"pokedex::backend::schema::pokedex_record.dart::PokedexRecordBuilder" o-- "pokedex::backend::schema::pokedex_record.dart::_$PokedexRecord"
+"pokedex::backend::schema::pokedex_record.dart::PokedexRecordBuilder" o-- "cloud_firestore::cloud_firestore.dart::DocumentReference<Object>"
+"pokedex::backend::schema::pokedex_record.dart::PokedexRecordBuilder" o-- "pokedex::backend::schema::pokedex_record.dart::PokedexRecordBuilder"
+"built_value::built_value.dart::Builder" <|-- "pokedex::backend::schema::pokedex_record.dart::PokedexRecordBuilder"
+
+class "pokedex::backend::schema::serializers.dart::DocumentReferenceSerializer" {
+  +bool structured
+  +Iterable<Type> types
+  +String wireName
+  +Object serialize()
+  +DocumentReference<Object?> deserialize()
+}
+
+"built_value::serializer.dart::PrimitiveSerializer" <|-- "pokedex::backend::schema::serializers.dart::DocumentReferenceSerializer"
+
+class "pokedex::backend::schema::serializers.dart::DateTimeSerializer" {
+  +Iterable<Type> types
+  +String wireName
+  +Object serialize()
+  +DateTime deserialize()
+}
+
+"built_value::serializer.dart::PrimitiveSerializer" <|-- "pokedex::backend::schema::serializers.dart::DateTimeSerializer"
+
+class "pokedex::backend::schema::serializers.dart::LatLngSerializer" {
+  +bool structured
+  +Iterable<Type> types
+  +String wireName
+  +Object serialize()
+  +LatLng deserialize()
+}
+
+"built_value::serializer.dart::PrimitiveSerializer" <|-- "pokedex::backend::schema::serializers.dart::LatLngSerializer"
+
+class "pokedex::backend::schema::serializers.dart::FirestoreUtilData" {
+  +Map<String, dynamic> fieldValues
+  +bool clearUnsetFields
+  +bool create
+  +bool delete
+  {static} +String name
+}
+
+class "pokedex::backend::schema::serializers.dart::FirestoreUtilDataSerializer" {
+  +bool structured
+  +Iterable<Type> types
+  +String wireName
+  +Object serialize()
+  +FirestoreUtilData deserialize()
+}
+
+"built_value::serializer.dart::PrimitiveSerializer" <|-- "pokedex::backend::schema::serializers.dart::FirestoreUtilDataSerializer"
+
+class "pokedex::backend::schema::serializers.dart::ColorSerializer" {
+  +Iterable<Type> types
+  +String wireName
+  +Object serialize()
+  +Color deserialize()
+}
+
+"built_value::serializer.dart::PrimitiveSerializer" <|-- "pokedex::backend::schema::serializers.dart::ColorSerializer"
+
+class "pokedex::flutter_flow::flutter_flow_animations.dart::AnimationInfo" {
+  +AnimationTrigger trigger
+  +List<Effect<dynamic>> effects
+  +bool applyInitialState
+  +bool loop
+  +bool reverse
+  +Adapter adapter
+  +AnimationController controller
+}
+
+"pokedex::flutter_flow::flutter_flow_animations.dart::AnimationInfo" o-- "pokedex::flutter_flow::flutter_flow_animations.dart::AnimationTrigger"
+"pokedex::flutter_flow::flutter_flow_animations.dart::AnimationInfo" o-- "flutter_animate::adapters::adapter.dart::Adapter"
+"pokedex::flutter_flow::flutter_flow_animations.dart::AnimationInfo" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+
+class "pokedex::flutter_flow::flutter_flow_animations.dart::TiltEffect" {
+  +Widget build()
+}
+
+"flutter_animate::effects::effect.dart::Effect" <|-- "pokedex::flutter_flow::flutter_flow_animations.dart::TiltEffect"
+
+class "pokedex::flutter_flow::flutter_flow_animations.dart::AnimationTrigger" {
+  +int index
+  {static} +List<AnimationTrigger> values
+  {static} +AnimationTrigger onPageLoad
+  {static} +AnimationTrigger onActionTrigger
+}
+
+"pokedex::flutter_flow::flutter_flow_animations.dart::AnimationTrigger" o-- "pokedex::flutter_flow::flutter_flow_animations.dart::AnimationTrigger"
+"dart::core::Enum" <|-- "pokedex::flutter_flow::flutter_flow_animations.dart::AnimationTrigger"
+
+class "pokedex::flutter_flow::flutter_flow_icon_button.dart::FlutterFlowIconButton" {
+  +Widget icon
+  +double? borderRadius
+  +double? buttonSize
+  +Color? fillColor
+  +Color? disabledColor
+  +Color? disabledIconColor
+  +Color? hoverColor
+  +Color? hoverIconColor
+  +Color? borderColor
+  +double? borderWidth
+  +bool showLoadingIndicator
+  +dynamic Function()? onPressed
+  +State<FlutterFlowIconButton> createState()
+}
+
+"pokedex::flutter_flow::flutter_flow_icon_button.dart::FlutterFlowIconButton" o-- "flutter::src::widgets::framework.dart::Widget"
+"pokedex::flutter_flow::flutter_flow_icon_button.dart::FlutterFlowIconButton" o-- "dart::ui::Color"
+"pokedex::flutter_flow::flutter_flow_icon_button.dart::FlutterFlowIconButton" o-- "null::dynamic Function()"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "pokedex::flutter_flow::flutter_flow_icon_button.dart::FlutterFlowIconButton"
+
+class "pokedex::flutter_flow::flutter_flow_icon_button.dart::_FlutterFlowIconButtonState" {
+  +bool loading
+  +double? iconSize
+  +Color? iconColor
+  +Widget effectiveIcon
+  +void initState()
+  +void didUpdateWidget()
+  -void _updateIcon()
+  +Widget build()
+}
+
+"pokedex::flutter_flow::flutter_flow_icon_button.dart::_FlutterFlowIconButtonState" o-- "dart::ui::Color"
+"pokedex::flutter_flow::flutter_flow_icon_button.dart::_FlutterFlowIconButtonState" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::State" <|-- "pokedex::flutter_flow::flutter_flow_icon_button.dart::_FlutterFlowIconButtonState"
+
+abstract class "pokedex::flutter_flow::flutter_flow_model.dart::FlutterFlowModel" {
+  -bool _isInitialized
+  +bool disposeOnWidgetDisposal
+  +bool updateOnChange
+  -void Function() _updateCallback
+  +void initState()
+  -void _init()
+  +void dispose()
+  +void maybeDispose()
+  +void onUpdate()
+  +FlutterFlowModel setOnUpdate()
+  +void updatePage()
+}
+
+"pokedex::flutter_flow::flutter_flow_model.dart::FlutterFlowModel" o-- "dart::ui::void Function()"
+
+class "pokedex::flutter_flow::flutter_flow_model.dart::FlutterFlowDynamicModels" {
+  +T Function() defaultBuilder
+  -Map<String, T> _childrenModels
+  -Map<String, int> _childrenIndexes
+  -Set<String>? _activeKeys
+  +T getModel()
+  +List<S> getValues()
+  +S? getValueAtIndex()
+  +S? getValueForKey()
+  +void dispose()
+  -void _updateActiveKeys()
+}
+
+"pokedex::flutter_flow::flutter_flow_model.dart::FlutterFlowDynamicModels" o-- "null::T Function()"
+
+abstract class "pokedex::flutter_flow::flutter_flow_theme.dart::FlutterFlowTheme" {
+  +Color primary
+  +Color secondary
+  +Color tertiary
+  +Color alternate
+  +Color primaryText
+  +Color secondaryText
+  +Color primaryBackground
+  +Color secondaryBackground
+  +Color accent1
+  +Color accent2
+  +Color accent3
+  +Color accent4
+  +Color success
+  +Color warning
+  +Color error
+  +Color info
+  +Color primaryBtnText
+  +Color lineColor
+  {static} +ThemeMode themeMode
+  +Color primaryColor
+  +Color secondaryColor
+  +Color tertiaryColor
+  +String title1Family
+  +TextStyle title1
+  +String title2Family
+  +TextStyle title2
+  +String title3Family
+  +TextStyle title3
+  +String subtitle1Family
+  +TextStyle subtitle1
+  +String subtitle2Family
+  +TextStyle subtitle2
+  +String bodyText1Family
+  +TextStyle bodyText1
+  +String bodyText2Family
+  +TextStyle bodyText2
+  +String displayLargeFamily
+  +TextStyle displayLarge
+  +String displayMediumFamily
+  +TextStyle displayMedium
+  +String displaySmallFamily
+  +TextStyle displaySmall
+  +String headlineLargeFamily
+  +TextStyle headlineLarge
+  +String headlineMediumFamily
+  +TextStyle headlineMedium
+  +String headlineSmallFamily
+  +TextStyle headlineSmall
+  +String titleLargeFamily
+  +TextStyle titleLarge
+  +String titleMediumFamily
+  +TextStyle titleMedium
+  +String titleSmallFamily
+  +TextStyle titleSmall
+  +String labelLargeFamily
+  +TextStyle labelLarge
+  +String labelMediumFamily
+  +TextStyle labelMedium
+  +String labelSmallFamily
+  +TextStyle labelSmall
+  +String bodyLargeFamily
+  +TextStyle bodyLarge
+  +String bodyMediumFamily
+  +TextStyle bodyMedium
+  +String bodySmallFamily
+  +TextStyle bodySmall
+  +Typography typography
+  {static} +Future<dynamic> initialize()
+  {static} +void saveThemeMode()
+  {static} +FlutterFlowTheme of()
+}
+
+"pokedex::flutter_flow::flutter_flow_theme.dart::FlutterFlowTheme" o-- "dart::ui::Color"
+"pokedex::flutter_flow::flutter_flow_theme.dart::FlutterFlowTheme" o-- "flutter::src::material::app.dart::ThemeMode"
+"pokedex::flutter_flow::flutter_flow_theme.dart::FlutterFlowTheme" o-- "flutter::src::painting::text_style.dart::TextStyle"
+"pokedex::flutter_flow::flutter_flow_theme.dart::FlutterFlowTheme" o-- "pokedex::flutter_flow::flutter_flow_theme.dart::Typography"
+
+class "pokedex::flutter_flow::flutter_flow_theme.dart::LightModeTheme" {
+  +Color primary
+  +Color secondary
+  +Color tertiary
+  +Color alternate
+  +Color primaryText
+  +Color secondaryText
+  +Color primaryBackground
+  +Color secondaryBackground
+  +Color accent1
+  +Color accent2
+  +Color accent3
+  +Color accent4
+  +Color success
+  +Color warning
+  +Color error
+  +Color info
+  +Color primaryBtnText
+  +Color lineColor
+  +Color primaryColor
+  +Color secondaryColor
+  +Color tertiaryColor
+}
+
+"pokedex::flutter_flow::flutter_flow_theme.dart::LightModeTheme" o-- "dart::ui::Color"
+"pokedex::flutter_flow::flutter_flow_theme.dart::FlutterFlowTheme" <|-- "pokedex::flutter_flow::flutter_flow_theme.dart::LightModeTheme"
+
+abstract class "pokedex::flutter_flow::flutter_flow_theme.dart::Typography" {
+  +String displayLargeFamily
+  +TextStyle displayLarge
+  +String displayMediumFamily
+  +TextStyle displayMedium
+  +String displaySmallFamily
+  +TextStyle displaySmall
+  +String headlineLargeFamily
+  +TextStyle headlineLarge
+  +String headlineMediumFamily
+  +TextStyle headlineMedium
+  +String headlineSmallFamily
+  +TextStyle headlineSmall
+  +String titleLargeFamily
+  +TextStyle titleLarge
+  +String titleMediumFamily
+  +TextStyle titleMedium
+  +String titleSmallFamily
+  +TextStyle titleSmall
+  +String labelLargeFamily
+  +TextStyle labelLarge
+  +String labelMediumFamily
+  +TextStyle labelMedium
+  +String labelSmallFamily
+  +TextStyle labelSmall
+  +String bodyLargeFamily
+  +TextStyle bodyLarge
+  +String bodyMediumFamily
+  +TextStyle bodyMedium
+  +String bodySmallFamily
+  +TextStyle bodySmall
+}
+
+"pokedex::flutter_flow::flutter_flow_theme.dart::Typography" o-- "flutter::src::painting::text_style.dart::TextStyle"
+
+class "pokedex::flutter_flow::flutter_flow_theme.dart::ThemeTypography" {
+  +FlutterFlowTheme theme
+  +String displayLargeFamily
+  +TextStyle displayLarge
+  +String displayMediumFamily
+  +TextStyle displayMedium
+  +String displaySmallFamily
+  +TextStyle displaySmall
+  +String headlineLargeFamily
+  +TextStyle headlineLarge
+  +String headlineMediumFamily
+  +TextStyle headlineMedium
+  +String headlineSmallFamily
+  +TextStyle headlineSmall
+  +String titleLargeFamily
+  +TextStyle titleLarge
+  +String titleMediumFamily
+  +TextStyle titleMedium
+  +String titleSmallFamily
+  +TextStyle titleSmall
+  +String labelLargeFamily
+  +TextStyle labelLarge
+  +String labelMediumFamily
+  +TextStyle labelMedium
+  +String labelSmallFamily
+  +TextStyle labelSmall
+  +String bodyLargeFamily
+  +TextStyle bodyLarge
+  +String bodyMediumFamily
+  +TextStyle bodyMedium
+  +String bodySmallFamily
+  +TextStyle bodySmall
+}
+
+"pokedex::flutter_flow::flutter_flow_theme.dart::ThemeTypography" o-- "pokedex::flutter_flow::flutter_flow_theme.dart::FlutterFlowTheme"
+"pokedex::flutter_flow::flutter_flow_theme.dart::ThemeTypography" o-- "flutter::src::painting::text_style.dart::TextStyle"
+"pokedex::flutter_flow::flutter_flow_theme.dart::Typography" <|-- "pokedex::flutter_flow::flutter_flow_theme.dart::ThemeTypography"
+
+class "pokedex::flutter_flow::flutter_flow_theme.dart::DarkModeTheme" {
+  +Color primary
+  +Color secondary
+  +Color tertiary
+  +Color alternate
+  +Color primaryText
+  +Color secondaryText
+  +Color primaryBackground
+  +Color secondaryBackground
+  +Color accent1
+  +Color accent2
+  +Color accent3
+  +Color accent4
+  +Color success
+  +Color warning
+  +Color error
+  +Color info
+  +Color primaryBtnText
+  +Color lineColor
+  +Color primaryColor
+  +Color secondaryColor
+  +Color tertiaryColor
+}
+
+"pokedex::flutter_flow::flutter_flow_theme.dart::DarkModeTheme" o-- "dart::ui::Color"
+"pokedex::flutter_flow::flutter_flow_theme.dart::FlutterFlowTheme" <|-- "pokedex::flutter_flow::flutter_flow_theme.dart::DarkModeTheme"
+
+class "pokedex::flutter_flow::flutter_flow_util.dart::FormatType" {
+  +int index
+  {static} +List<FormatType> values
+  {static} +FormatType decimal
+  {static} +FormatType percent
+  {static} +FormatType scientific
+  {static} +FormatType compact
+  {static} +FormatType compactLong
+  {static} +FormatType custom
+}
+
+"pokedex::flutter_flow::flutter_flow_util.dart::FormatType" o-- "pokedex::flutter_flow::flutter_flow_util.dart::FormatType"
+"dart::core::Enum" <|-- "pokedex::flutter_flow::flutter_flow_util.dart::FormatType"
+
+class "pokedex::flutter_flow::flutter_flow_util.dart::DecimalType" {
+  +int index
+  {static} +List<DecimalType> values
+  {static} +DecimalType automatic
+  {static} +DecimalType periodDecimal
+  {static} +DecimalType commaDecimal
+}
+
+"pokedex::flutter_flow::flutter_flow_util.dart::DecimalType" o-- "pokedex::flutter_flow::flutter_flow_util.dart::DecimalType"
+"dart::core::Enum" <|-- "pokedex::flutter_flow::flutter_flow_util.dart::DecimalType"
+
+class "pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonOptions" {
+  +TextStyle? textStyle
+  +double? elevation
+  +double? height
+  +double? width
+  +EdgeInsetsGeometry? padding
+  +Color? color
+  +Color? disabledColor
+  +Color? disabledTextColor
+  +Color? splashColor
+  +double? iconSize
+  +Color? iconColor
+  +EdgeInsetsGeometry? iconPadding
+  +BorderRadius? borderRadius
+  +BorderSide? borderSide
+  +Color? hoverColor
+  +BorderSide? hoverBorderSide
+  +Color? hoverTextColor
+  +double? hoverElevation
+}
+
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonOptions" o-- "flutter::src::painting::text_style.dart::TextStyle"
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonOptions" o-- "flutter::src::painting::edge_insets.dart::EdgeInsetsGeometry"
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonOptions" o-- "dart::ui::Color"
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonOptions" o-- "flutter::src::painting::border_radius.dart::BorderRadius"
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonOptions" o-- "flutter::src::painting::borders.dart::BorderSide"
+
+class "pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonWidget" {
+  +String text
+  +Widget? icon
+  +IconData? iconData
+  +dynamic Function()? onPressed
+  +FFButtonOptions options
+  +bool showLoadingIndicator
+  +State<FFButtonWidget> createState()
+}
+
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonWidget" o-- "flutter::src::widgets::framework.dart::Widget"
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonWidget" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonWidget" o-- "null::dynamic Function()"
+"pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonWidget" o-- "pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonOptions"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "pokedex::flutter_flow::flutter_flow_widgets.dart::FFButtonWidget"
+
+class "pokedex::flutter_flow::flutter_flow_widgets.dart::_FFButtonWidgetState" {
+  +bool loading
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "pokedex::flutter_flow::flutter_flow_widgets.dart::_FFButtonWidgetState"
+
+class "pokedex::flutter_flow::form_field_controller.dart::FormFieldController" {
+  +T? initialValue
+  +void reset()
+}
+
+"flutter::src::foundation::change_notifier.dart::ValueNotifier" <|-- "pokedex::flutter_flow::form_field_controller.dart::FormFieldController"
+
+class "pokedex::flutter_flow::internationalization.dart::FFLocalizations" {
+  +Locale locale
+  {static} -SharedPreferences _prefs
+  {static} -Set<String> _languagesWithShortCode
+  +String languageCode
+  +String? languageShortCode
+  +int languageIndex
+  {static} +FFLocalizations of()
+  {static} +List<String> languages()
+  {static} +Future<dynamic> initialize()
+  {static} +Future<dynamic> storeLocale()
+  {static} +Locale? getStoredLocale()
+  +String getText()
+  +String getVariableText()
+}
+
+"pokedex::flutter_flow::internationalization.dart::FFLocalizations" o-- "dart::ui::Locale"
+"pokedex::flutter_flow::internationalization.dart::FFLocalizations" o-- "shared_preferences::shared_preferences.dart::SharedPreferences"
+
+class "pokedex::flutter_flow::internationalization.dart::FFLocalizationsDelegate" {
+  +bool isSupported()
+  +Future<FFLocalizations> load()
+  +bool shouldReload()
+}
+
+"flutter::src::widgets::localizations.dart::LocalizationsDelegate" <|-- "pokedex::flutter_flow::internationalization.dart::FFLocalizationsDelegate"
+
+class "pokedex::flutter_flow::keep_alive_wrapper.dart::KeepAliveWidgetWrapper" {
+  +Widget Function(BuildContext) builder
+  +State<KeepAliveWidgetWrapper> createState()
+}
+
+"pokedex::flutter_flow::keep_alive_wrapper.dart::KeepAliveWidgetWrapper" o-- "flutter::src::widgets::framework.dart::Widget Function(BuildContext)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "pokedex::flutter_flow::keep_alive_wrapper.dart::KeepAliveWidgetWrapper"
+
+class "pokedex::flutter_flow::keep_alive_wrapper.dart::_KeepAliveWidgetWrapperState" {
+  +bool wantKeepAlive
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "pokedex::flutter_flow::keep_alive_wrapper.dart::_KeepAliveWidgetWrapperState"
+"flutter::src::widgets::automatic_keep_alive.dart::AutomaticKeepAliveClientMixin" <|-- "pokedex::flutter_flow::keep_alive_wrapper.dart::_KeepAliveWidgetWrapperState"
+
+class "pokedex::flutter_flow::lat_lng.dart::LatLng" {
+  +double latitude
+  +double longitude
+  +int hashCode
+  +String toString()
+  +String serialize()
+  +bool ==()
+}
+
+class "pokedex::flutter_flow::nav::nav.dart::AppStateNotifier" {
+  +BaseAuthUser? initialUser
+  +BaseAuthUser? user
+  +bool showSplashImage
+  -String? _redirectLocation
+  +bool notifyOnAuthChange
+  +bool loading
+  +bool loggedIn
+  +bool initiallyLoggedIn
+  +bool shouldRedirect
+  +String getRedirectLocation()
+  +bool hasRedirect()
+  +void setRedirectLocationIfUnset()
+  +void clearRedirectLocation()
+  +void updateNotifyOnAuthChange()
+  +void update()
+  +void stopShowingSplashImage()
+}
+
+"pokedex::flutter_flow::nav::nav.dart::AppStateNotifier" o-- "pokedex::auth::base_auth_user_provider.dart::BaseAuthUser"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "pokedex::flutter_flow::nav::nav.dart::AppStateNotifier"
+
+class "pokedex::flutter_flow::nav::nav.dart::FFParameters" {
+  +GoRouterState state
+  +Map<String, Future<dynamic> Function(String)> asyncParams
+  +Map<String, dynamic> futureParamValues
+  +bool isEmpty
+  +bool hasFutures
+  +bool isAsyncParam()
+  +Future<bool> completeFutures()
+  +dynamic getParam()
+}
+
+"pokedex::flutter_flow::nav::nav.dart::FFParameters" o-- "go_router::src::go_router_state.dart::GoRouterState"
+
+class "pokedex::flutter_flow::nav::nav.dart::FFRoute" {
+  +String name
+  +String path
+  +bool requireAuth
+  +Map<String, Future<dynamic> Function(String)> asyncParams
+  +Widget Function(BuildContext, FFParameters) builder
+  +List<GoRoute> routes
+  +GoRoute toRoute()
+}
+
+"pokedex::flutter_flow::nav::nav.dart::FFRoute" o-- "null::Widget Function(BuildContext, FFParameters)"
+
+class "pokedex::flutter_flow::nav::nav.dart::TransitionInfo" {
+  +bool hasTransition
+  +PageTransitionType transitionType
+  +Duration duration
+  +Alignment? alignment
+  {static} +TransitionInfo appDefault()
+}
+
+"pokedex::flutter_flow::nav::nav.dart::TransitionInfo" o-- "page_transition::src::enum.dart::PageTransitionType"
+"pokedex::flutter_flow::nav::nav.dart::TransitionInfo" o-- "flutter::src::painting::alignment.dart::Alignment"
+
+class "pokedex::flutter_flow::nav::serialization_util.dart::ParamType" {
+  +int index
+  {static} +List<ParamType> values
+  {static} +ParamType int
+  {static} +ParamType double
+  {static} +ParamType String
+  {static} +ParamType bool
+  {static} +ParamType DateTime
+  {static} +ParamType DateTimeRange
+  {static} +ParamType LatLng
+  {static} +ParamType Color
+  {static} +ParamType FFPlace
+  {static} +ParamType FFUploadedFile
+  {static} +ParamType JSON
+  {static} +ParamType Document
+  {static} +ParamType DocumentReference
+}
+
+"pokedex::flutter_flow::nav::serialization_util.dart::ParamType" o-- "pokedex::flutter_flow::nav::serialization_util.dart::ParamType"
+"dart::core::Enum" <|-- "pokedex::flutter_flow::nav::serialization_util.dart::ParamType"
+
+class "pokedex::flutter_flow::place.dart::FFPlace" {
+  +LatLng latLng
+  +String name
+  +String address
+  +String city
+  +String state
+  +String country
+  +String zipCode
+  +int hashCode
+  +String toString()
+  +bool ==()
+}
+
+"pokedex::flutter_flow::place.dart::FFPlace" o-- "pokedex::flutter_flow::lat_lng.dart::LatLng"
+
+class "pokedex::flutter_flow::uploaded_file.dart::FFUploadedFile" {
+  +String? name
+  +Uint8List? bytes
+  +double? height
+  +double? width
+  +int hashCode
+  +String toString()
+  +String serialize()
+  {static} +FFUploadedFile deserialize()
+  +bool ==()
+}
+
+"pokedex::flutter_flow::uploaded_file.dart::FFUploadedFile" o-- "dart::typed_data::Uint8List"
+
+class "pokedex::main.dart::MyApp" {
+  +State<MyApp> createState()
+  {static} +_MyAppState of()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "pokedex::main.dart::MyApp"
+
+class "pokedex::main.dart::_MyAppState" {
+  -Locale? _locale
+  -ThemeMode _themeMode
+  +Stream<BaseAuthUser> userStream
+  -AppStateNotifier _appStateNotifier
+  -GoRouter _router
+  +void initState()
+  +void setLocale()
+  +void setThemeMode()
+  +Widget build()
+}
+
+"pokedex::main.dart::_MyAppState" o-- "dart::ui::Locale"
+"pokedex::main.dart::_MyAppState" o-- "flutter::src::material::app.dart::ThemeMode"
+"pokedex::main.dart::_MyAppState" o-- "dart::async::Stream<BaseAuthUser>"
+"pokedex::main.dart::_MyAppState" o-- "pokedex::flutter_flow::nav::nav.dart::AppStateNotifier"
+"pokedex::main.dart::_MyAppState" o-- "go_router::src::go_router.dart::GoRouter"
+"flutter::src::widgets::framework.dart::State" <|-- "pokedex::main.dart::_MyAppState"
+
+class "pokedex::models::database_helper.dart::DatabaseHelper" {
+  {static} -String _dbName
+  {static} -int _dbVersion
+  -String _tableName
+  {static} +DatabaseHelper instance
+  {static} -Database? _database
+  +Future<Database> database
+  -Future<Database> _initDatabase()
+  -Future<void> _copyDbFromAssets()
+  -Future<void> _onCreate()
+  +Future<List<Map<String, dynamic>>> fetchData()
+  +Future<List<Map<String, dynamic>>> customQuery()
+  +Future<List<Map<String, dynamic>>> customQueryWithArgs()
+  +Future<List<Map<String, dynamic>>> customQuerywithlistparameters()
+}
+
+"pokedex::models::database_helper.dart::DatabaseHelper" o-- "pokedex::models::database_helper.dart::DatabaseHelper"
+"pokedex::models::database_helper.dart::DatabaseHelper" o-- "sqflite_common::sqlite_api.dart::Database"
+
+class "pokedex::models::myPokemonCardUI.dart::MyPokemonCard" {
+  +String name
+  +String id
+  +String imageUrl
+  +int type
+  +int type2
+  +State<MyPokemonCard> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "pokedex::models::myPokemonCardUI.dart::MyPokemonCard"
+
+class "pokedex::models::myPokemonCardUI.dart::_MyPokemonCardState" {
+  +Future<String> typeName
+  +String h
+  +Future<String> type2Name
+  +void initState()
+  -Future<String> _getType()
+  -Future<String> _getsecondType()
+  +Color getAvatarColor()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "pokedex::models::myPokemonCardUI.dart::_MyPokemonCardState"
+
+class "pokedex::pages::home::home_widget.dart::HomeWidget" {
+  +_HomeWidgetState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "pokedex::pages::home::home_widget.dart::HomeWidget"
+
+class "pokedex::pages::home::home_widget.dart::_HomeWidgetState" {
+  -Future<List<Map<String, dynamic>>> _data
+  -Future<List<Map<String, dynamic>>> _types
+  -Future<List<Map<String, dynamic>>> _custom
+  +Future<List<Map<String, dynamic>>> name
+  -TextEditingController _searchController
+  -String _searchQuery
+  +List<String> typename
+  -bool _isSortedAlphabetically
+  -String _sortingCriteria
+  +void initState()
+  -Future<void> _fetchData()
+  +Color getAvatarColor()
+  +void settingModalBottomSheet()
+  -void _showSortingBottomSheet()
+  +Widget build()
+}
+
+"pokedex::pages::home::home_widget.dart::_HomeWidgetState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "pokedex::pages::home::home_widget.dart::_HomeWidgetState"
+
+class "pokedex::pages::login::login_model.dart::LoginModel" {
+  +TextEditingController? emailAddressController
+  +String? Function(BuildContext, String?)? emailAddressControllerValidator
+  +TextEditingController? passwordController
+  +bool passwordVisibility
+  +String? Function(BuildContext, String?)? passwordControllerValidator
+  +TextEditingController? emailAddressCreateController
+  +String? Function(BuildContext, String?)? emailAddressCreateControllerValidator
+  +TextEditingController? passwordCreateController
+  +bool passwordCreateVisibility
+  +String? Function(BuildContext, String?)? passwordCreateControllerValidator
+  +void initState()
+  +void dispose()
+}
+
+"pokedex::pages::login::login_model.dart::LoginModel" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"pokedex::pages::login::login_model.dart::LoginModel" o-- "null::String Function(BuildContext, String)"
+"pokedex::flutter_flow::flutter_flow_model.dart::FlutterFlowModel" <|-- "pokedex::pages::login::login_model.dart::LoginModel"
+
+class "pokedex::pages::login::login_widget.dart::LoginWidget" {
+  +_LoginWidgetState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "pokedex::pages::login::login_widget.dart::LoginWidget"
+
+class "pokedex::pages::login::login_widget.dart::_LoginWidgetState" {
+  -LoginModel _model
+  +GlobalKey<ScaffoldState> scaffoldKey
+  -FocusNode _unfocusNode
+  +void initState()
+  +void dispose()
+  +Widget build()
+}
+
+"pokedex::pages::login::login_widget.dart::_LoginWidgetState" o-- "pokedex::pages::login::login_model.dart::LoginModel"
+"pokedex::pages::login::login_widget.dart::_LoginWidgetState" o-- "flutter::src::widgets::framework.dart::GlobalKey<ScaffoldState>"
+"pokedex::pages::login::login_widget.dart::_LoginWidgetState" o-- "flutter::src::widgets::focus_manager.dart::FocusNode"
+"flutter::src::widgets::framework.dart::State" <|-- "pokedex::pages::login::login_widget.dart::_LoginWidgetState"
+
+class "pokedex::pages::Pokemontypes.dart::SortTypes" {
+  +String typename
+  +_SortTypesState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "pokedex::pages::Pokemontypes.dart::SortTypes"
+
+class "pokedex::pages::Pokemontypes.dart::_SortTypesState" {
+  +Future<List<Map<String, dynamic>>> initialization
+  +int typenumber
+  -Future<List<Map<String, dynamic>>> _initializeData()
+  -Future<void> _getTypeno()
+  -Future<List<Map<String, dynamic>>> _getPokemon()
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "pokedex::pages::Pokemontypes.dart::_SortTypesState"
+
+
+@enduml

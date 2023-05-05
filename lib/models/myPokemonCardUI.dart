@@ -7,8 +7,9 @@ class MyPokemonCard extends StatefulWidget {
   final String imageUrl;
   final int type;
   final int type2;
+  final String? statistic_val;
 
-  MyPokemonCard({required this.name, required this.id, required this.imageUrl, required this.type, required this.type2 });
+  MyPokemonCard({required this.name, required this.id, required this.imageUrl, required this.type, required this.type2, this.statistic_val });
 
   @override
   State<MyPokemonCard> createState() => _MyPokemonCardState();
@@ -18,13 +19,25 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
   late Future<String> typeName;
   late String h;
   late Future<String> type2Name;
+  late Future<String> static_val_res;
+  
 
   @override
   void initState() {
     super.initState();
     typeName = _getType() ;
     type2Name= _getsecondType();
+    static_val_res=_getStatsVal();
     
+  }
+
+  Future<String> _getStatsVal() async{
+    if(widget.statistic_val!=''){
+      String? val=widget.statistic_val;
+      var temp = await DatabaseHelper.instance.customQuery('SELECT "${widget.statistic_val}" FROM Pokemon where name = "${widget.name}" ');
+      return temp[0][val].toString();
+    }
+    return '0';
   }
  
   Future<String> _getType() async {
@@ -88,7 +101,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
   @override
   Widget build(BuildContext context) {
   return FutureBuilder<List<String>>(
-    future: Future.wait([typeName,type2Name]),
+    future: Future.wait([typeName,type2Name,static_val_res]),
     builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.hasError) {
@@ -96,6 +109,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
         }
         final typeName = snapshot.data![0];
         final type2Name = snapshot.data![1];
+        final statistic_val_result=snapshot.data![2];
         return Container(
           width: double.infinity,
           height: 300,
@@ -111,13 +125,25 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
             Column(
               children: 
       [
-                Align(
+        Row(
+          children: [
+              Align(
                 alignment:Alignment.topLeft,
                child: Text(
-                  '#${widget.id}',
+                  statistic_val_result,
                   style: TextStyle(fontSize: 20.0,color: Colors.white),
                 )
                 ),
+                Align(
+                alignment:Alignment.topLeft,
+               child: Text(
+                  '${widget.statistic_val}',
+                  style: TextStyle(fontSize: 20.0,color: Colors.white),
+                )
+                ),
+          ],
+        ),
+                
                 Padding(
                   padding: EdgeInsets.only(top:0.5),
                     child: CircleAvatar(
@@ -150,7 +176,8 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                     child : Text(
                     (typeName ),
                     style: TextStyle(fontSize: 16.0, color: Colors.white),
-                  ),),
+                  ),
+                  ),
                 
                     Padding(
                       padding: const EdgeInsets.only(left: 30),
@@ -169,10 +196,9 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                       style: TextStyle(fontSize: 16.0, color: Colors.white),
                                       ),),
                     ),
-                  ],),
-                )
-                      
-            ]
+                  ],
+                  ),
+                )]
             ),
           ),
         )

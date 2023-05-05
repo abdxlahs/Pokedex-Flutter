@@ -12,6 +12,7 @@ import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
+import 'package:dcdg/dcdg.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
