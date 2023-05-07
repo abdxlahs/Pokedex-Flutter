@@ -136,7 +136,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     
 }
   void _showSortingBottomSheet(context) {
-    List<String> stats=["hp","speed","defence","attack","sp_defence","sp_attack"];
+    List<String> stats=["hp","speed","defence","attack","sp_defence","sp_attack","remove sort by any stats"];
     
     
 
@@ -160,11 +160,15 @@ class _HomeWidgetState extends State<HomeWidget> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor:Colors.grey ),
+                  
                   onPressed: () async {
-
+                    stats[index] != "remove sort by any stats"?
                     setState(() {
                       statistic_val=stats[index];
                     _data = DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon order by "${statistic_val}" DESC');  
+                    }):setState(() {
+                       statistic_val='';
+                      _data = DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon');
                     });
                     
                    },

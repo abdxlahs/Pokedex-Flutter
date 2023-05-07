@@ -68,6 +68,7 @@ dependencies:
   url_launcher: 6.1.5
   analyzer: 5.2.0
   dcdg: 4.0.0
+  percent_indicator: ^4.2.3
 dependency_overrides:
   analyzer: ^2.6.0
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/database_helper.dart';
+import 'Base_stats.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MyPokemonCard extends StatefulWidget {
   final String name;
@@ -113,95 +115,128 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
         return Container(
           width: double.infinity,
           height: 300,
-          child:Card(
-          color: (getAvatarColor(typeName)),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          elevation: 5.0,
-          child: Padding(
-            padding: EdgeInsets.all(5),
-            child: 
-            Column(
-              children: 
+          child:InkWell(
+            onTap: () async {
+              {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.leftToRight,
+                    child: BaseStatistics(id: widget.id, name:widget.name , type1: typeName,type2: type2Name, imageURL: widget.imageUrl, color:getAvatarColor(typeName)),
+                  ),
+                );
+              };
+            },
+            child:
+              Card(
+              color: (getAvatarColor(typeName)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              elevation: 5.0,
+              child: Padding(
+                padding: EdgeInsets.all(5),
+                child: 
+                Column(
+                  children: 
       [
         Row(
-          children: [
-              Align(
-                alignment:Alignment.topLeft,
-               child: Text(
-                  statistic_val_result,
-                  style: TextStyle(fontSize: 20.0,color: Colors.white),
-                )
-                ),
-                Align(
-                alignment:Alignment.topLeft,
-               child: Text(
-                  '${widget.statistic_val}',
-                  style: TextStyle(fontSize: 20.0,color: Colors.white),
-                )
-                ),
-          ],
-        ),
-                
-                Padding(
-                  padding: EdgeInsets.only(top:0.5),
-                    child: CircleAvatar(
-                    backgroundColor: getAvatarColor(typeName),
-                    backgroundImage: NetworkImage(widget.imageUrl),
-                    radius: 75,
-                ),
-                ),
-                Padding(
-                padding:EdgeInsets.only(top:15),
-                 child: Text(
-                  '${widget.name.toUpperCase()}',
-                  style: TextStyle(fontSize: 20.0,color: Colors.white,fontWeight: FontWeight.bold),
-                )),
-                SizedBox(height: 20.0),
-                Padding(
-                  padding: EdgeInsets.only(left: 50),
-                  child: Row(children: [
-                
-                    Container(
-                    padding:type2Name!='0'? EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.1):EdgeInsets.symmetric(horizontal: 120.0, vertical: 0.1),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                      color:  Colors.white,
-                      width: 2.0,
-                      ),
-                      color: getAvatarColor(typeName), // Change this to the background color you want
-                      borderRadius: BorderRadius.circular(12.0),),
-                     
-                    child : Text(
-                    (typeName ),
-                    style: TextStyle(fontSize: 16.0, color: Colors.white),
-                  ),
-                  ),
-                
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Container(
-                      padding: type2Name!='0'? EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.1):EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                        color: type2Name!='0'? Colors.white : getAvatarColor(typeName),
-                        width: 2.0,
-                        ),
-                        color: getAvatarColor(typeName), // Change this to the background color you want
-                        borderRadius: BorderRadius.circular(12.0),),
-                       
-                      child : Text(
-                      (type2Name!='0'?type2Name:'' ),
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
-                                      ),),
+              children: [
+                 Align(
+                    alignment:Alignment.topLeft,
+                   child: Text(
+                      '#'+widget.id,
+                      style: TextStyle(fontSize: 20.0,color: Colors.white),
+                    )
                     ),
-                  ],
-                  ),
-                )]
-            ),
+                SizedBox(width: 200,),
+                  Align(
+  alignment: Alignment.topLeft,
+                child: statistic_val_result != '0'
+                    ? Container(
+                        padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 12.0),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Text(
+                          statistic_val_result,
+                          style: TextStyle(fontSize: 20.0, color: Colors.white),
+                        ),
+                      )
+                    : SizedBox(), // Replace Container() with SizedBox()
+),
+
+
+                    Align(
+                    alignment:Alignment.topLeft,
+                   child: Text(
+                      '${widget.statistic_val}',
+                      style: TextStyle(fontSize: 20.0,color: Colors.white),
+                    )
+                    ),
+              ],
+        ),
+                    
+                    Padding(
+                      padding: EdgeInsets.only(top:0.5),
+                        child: CircleAvatar(
+                        backgroundColor: getAvatarColor(typeName),
+                        backgroundImage: NetworkImage(widget.imageUrl),
+                        radius: 75,
+                    ),
+                    ),
+                    Padding(
+                    padding:EdgeInsets.only(top:15),
+                     child: Text(
+                      '${widget.name.toUpperCase()}',
+                      style: TextStyle(fontSize: 20.0,color: Colors.white,fontWeight: FontWeight.bold),
+                    )),
+                    SizedBox(height: 20.0),
+                    Padding(
+                      padding: EdgeInsets.only(left: 50),
+                      child: Row(children: [
+                    
+                        Container(
+                        padding:type2Name!='0'? EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.1):EdgeInsets.symmetric(horizontal: 120.0, vertical: 0.1),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                          color:  Colors.white,
+                          width: 2.0,
+                          ),
+                          color: getAvatarColor(typeName), // Change this to the background color you want
+                          borderRadius: BorderRadius.circular(12.0),),
+                         
+                        child : Text(
+                        (typeName ),
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      ),
+                      ),
+                    
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Container(
+                          padding: type2Name!='0'? EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.1):EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                            color: type2Name!='0'? Colors.white : getAvatarColor(typeName),
+                            width: 2.0,
+                            ),
+                            color: getAvatarColor(typeName), // Change this to the background color you want
+                            borderRadius: BorderRadius.circular(12.0),),
+                           
+                          child : Text(
+                          (type2Name!='0'?type2Name:'' ),
+                          style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                          ),),
+                        ),
+                      ],
+                      ),
+                    )]
+                ),
+              ),
+        ),
           ),
-        )
         );
       } else {
         return CircularProgressIndicator();
