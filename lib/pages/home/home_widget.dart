@@ -45,7 +45,6 @@ class _HomeWidgetState extends State<HomeWidget> {
     for (Map<String, dynamic> row in result) {
         this.typename.add(row['name']);
   }
-
   }
   Color getAvatarColor(String typeName) {
     switch (typeName) {
@@ -346,13 +345,9 @@ Padding(
     child: Text(
   
                   'Sort by Statistics',
-  
                   style: TextStyle(
-  
                     fontSize: 16,
-  
                     fontWeight: FontWeight.w600,
-  
                   ),
   
                 ),
