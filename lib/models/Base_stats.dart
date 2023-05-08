@@ -1,6 +1,9 @@
+import 'package:bottom_sheet_expandable_bar/bottom_sheet_bar_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:bottom_sheet_expandable_bar/bottom_sheet_expandable_bar.dart';
 import 'package:pokedex/models/database_helper.dart';
 import 'statsbar.dart';
+
 
 
 class BaseStatistics extends StatefulWidget {
@@ -118,6 +121,7 @@ Future<String> _getSpattack() async{
     final sp_attackdata=snapshot.data![8];
     List <String> bar_data=[hpdata,speeddata,defencedata,attackdata,sp_defencedata,sp_attackdata];
     
+    var _currentIndex;
     return Scaffold(
       backgroundColor: widget.color,
       appBar: AppBar(
@@ -125,192 +129,195 @@ Future<String> _getSpattack() async{
         elevation: 0.0,
         title: Text("Pokédex"),
       ),
-      body: Stack(
-        children: [
-          Container(
-            height: 140.0,
-    decoration: new BoxDecoration(
-          color: widget.color,
-          boxShadow: [
-            new BoxShadow(blurRadius: 20.0)
-          ],
-          borderRadius: new BorderRadius.vertical(
-              bottom: new Radius.elliptical(
-                  MediaQuery.of(context).size.width, 100.0)),
-    ),
-          ),
-          Column(children: [
-            Center(
-              child: CircleAvatar(
-                          backgroundColor: widget.color,
-                          backgroundImage: NetworkImage(widget.imageURL),
-                          radius: 65,),
-            ),
-            
-            SizedBox(height: 30,),
-            Center(child: Text(widget.name.toUpperCase() ,style:TextStyle(fontWeight: FontWeight.bold ,fontSize: 25,color: Colors.white)),),
-            SizedBox(height: 10,),
-            Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    Container(
-      decoration: BoxDecoration(
-        color: Color(0xFF3366FF), // Blue color
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: Text(
-        widget.type1,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          fontSize: 16,
-        ),
-      ),
-    ),
-    SizedBox(width: 30),
-    widget.type2 != '0'
-        ? Container(
-            decoration: BoxDecoration(
-              color: Color(0xFF33CC99), // Green color
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Text(
-              widget.type2,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
-          )
-        : SizedBox(),
-  ],
-),
-
-            SizedBox(height: 10,),
-            Card(
-  elevation: 5.0,
-  color: Colors.white,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(10.0),
-  ),
-  child: Container(
-    padding: EdgeInsets.all(16.0),
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            pokedexEntry,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black
-            ),
-          ),
-          SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "HEIGHT",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      double.parse(pokemonheight).toStringAsFixed(2) + " m",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 24),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "WEIGHT",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      double.parse(pokemonweight).toStringAsFixed(2) + " Kg",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                     SizedBox(height: 8),
-
-                  ],
-                ),
-              ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              height: 140.0,
+          decoration: new BoxDecoration(
+            color: widget.color,
+            boxShadow: [
+              new BoxShadow(blurRadius: 20.0)
             ],
+            borderRadius: new BorderRadius.vertical(
+                bottom: new Radius.elliptical(
+                    MediaQuery.of(context).size.width, 100.0)),
           ),
-        ],
-      ),
-    ),
-  ),
-),
-SizedBox(height: 15,),
-Container(
-      decoration: BoxDecoration(
-        color:Color(0xFF00FF00), // Blue color
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: Text(
-        "Base Statistics",
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          fontSize: 16,
+            ),
+            Column(
+            children: [
+              Center(
+                child: CircleAvatar(
+                            backgroundColor: widget.color,
+                            backgroundImage: NetworkImage(widget.imageURL),
+                            radius: 65,),
+              ),
+              
+              SizedBox(height: 30,),
+              Center(child: Text(widget.name.toUpperCase() ,style:TextStyle(fontWeight: FontWeight.bold ,fontSize: 25,color: Colors.white)),),
+              SizedBox(height: 10,),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFF3366FF), // Blue color
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Text(
+                    widget.type1,
+                    style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 16,
+                    ),
+                  ),
+                    ),
+                    SizedBox(width: 30),
+                    widget.type2 != '0'
+                    ? Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF33CC99), // Green color
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: Text(
+                widget.type2,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+            )
+                    : SizedBox(),
+                  ],
+                ),
+                
+              SizedBox(height: 10,),
+              Card(
+                  elevation: 5.0,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+            Text(
+              pokedexEntry,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "HEIGHT",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        double.parse(pokemonheight).toStringAsFixed(2) + " m",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 24),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "WEIGHT",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        double.parse(pokemonweight).toStringAsFixed(2) + " Kg",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                       SizedBox(height: 8),
+                
+                    ],
+                  ),
+                ),
+              ],
+            ),
+                    ],
+                  ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Container(
+                  decoration: BoxDecoration(
+                    color:Color(0xFF00FF00), // Blue color
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Text(
+                    "Base Statistics",
+                    style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 16,
+                    ),
+                  ),
+                    ),
+                SizedBox(height: 15,),
+                  Expanded(
+                  child:
+                  Card(elevation: 5.0,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                    child:  ListView.builder(
+                    itemCount: widget.stats.length,
+                    itemBuilder: (BuildContext context, int index) {
+                  String statisticMetric = widget.stats[index];
+                  return StatsBar(statisticMetric: statisticMetric, max_metric_val: widget.max_statistic[index], matric_val: double.parse(bar_data[index]), color: widget.color);
+                    },
+                  ),
+                    
+                   
+                ),
+                ),
+                ],          
+                )
+          ],
         ),
       ),
-    ),
-SizedBox(height: 15,),
-  
-  Expanded(
-  child:
-  Card(elevation: 5.0,
-  color: Colors.white,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(10.0),
-  ),
-    child: 
-   ListView.builder(
-    itemCount: widget.stats.length,
-    itemBuilder: (BuildContext context, int index) {
-      String statisticMetric = widget.stats[index];
-      return StatsBar(statisticMetric: statisticMetric, max_metric_val: widget.max_statistic[index], matric_val: double.parse(bar_data[index]), color: widget.color);
-    },
-  ),
-),
-),          
-  ],
-          
-          )
-        ],
-      ),
+ 
 
     );
     } else {

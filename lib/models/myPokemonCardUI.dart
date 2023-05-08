@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/database_helper.dart';
 import 'Base_stats.dart';
@@ -232,16 +233,21 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                         ),
                       ],
                       ),
-                    )]
+                    )
+                    ]
                 ),
               ),
         ),
-          ),
+          ),          
         );
+      
+       
+
       } else {
         return CircularProgressIndicator();
       }
     },
+
   );
 }
 }

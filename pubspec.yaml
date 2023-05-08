@@ -69,6 +69,7 @@ dependencies:
   analyzer: 5.2.0
   dcdg: 4.0.0
   percent_indicator: ^4.2.3
+  bottom_sheet_expandable_bar: ^0.1.2
 dependency_overrides:
   analyzer: ^2.6.0
 
