@@ -22,12 +22,16 @@ class _SortTypesState extends State<SortTypes> {
 
   Future<void> _getTypeno() async {
     var temp = await DatabaseHelper.instance.customQuery("SELECT id FROM Types WHERE name = '${widget.typename}'");
-    typenumber = temp[0]["id"];
+     if(temp != null && temp.isNotEmpty && temp[0]["id"] != null) {
+            typenumber = temp[0]["id"];
+     }
+    
   }
 
   Future<List<Map<String, dynamic>>> _getPokemon() async {
     print("type: " + typenumber.toString());
-    return DatabaseHelper.instance.customQuery("SELECT * FROM Pokemon WHERE type1 = '${typenumber}' OR type2 = '${typenumber}' ");
+    
+    return await DatabaseHelper.instance.customQuery('SELECT * FROM Pokemon WHERE type1 = "${typenumber}" OR type2 = "${typenumber}" ');
   }
 
   @override
@@ -36,8 +40,7 @@ class _SortTypesState extends State<SortTypes> {
     initialization = _initializeData();
   }
 
-    @override
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -54,11 +57,13 @@ class _SortTypesState extends State<SortTypes> {
                   if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   }
+                  
                   final data = snapshot.data!;
 
                   return ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
+                      if (data[index] != null ){
                       var type2 = data[index]['type2'];
                       print(type2);
                       if (type2 == null) {
@@ -71,6 +76,7 @@ class _SortTypesState extends State<SortTypes> {
                         type: data[index]['type1'],
                         type2: type2,
                       );
+                      }
                     },
                   );
                 } else {

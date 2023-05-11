@@ -10,9 +10,9 @@ class MyPokemonCard extends StatefulWidget {
   final String imageUrl;
   final int type;
   final int type2;
-  final String? statistic_val;
+  String statistic_val='';
 
-  MyPokemonCard({required this.name, required this.id, required this.imageUrl, required this.type, required this.type2, this.statistic_val });
+  MyPokemonCard({required this.name, required this.id, required this.imageUrl, required this.type, required this.type2, this.statistic_val=''});
 
   @override
   State<MyPokemonCard> createState() => _MyPokemonCardState();
