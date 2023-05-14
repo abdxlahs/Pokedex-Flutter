@@ -1,8 +1,12 @@
 
 import 'package:flutter/material.dart';
-
+import 'package:pokedex/models/BottomBar.dart';
+import 'package:pokedex/models/basic_info.dart';
 import 'package:pokedex/models/database_helper.dart';
 import 'statsbar.dart';
+import 'package:sliding_clipped_nav_bar/sliding_clipped_nav_bar.dart';
+import 'package:pokedex/pages/moves.dart';
+
 
 
 
@@ -101,6 +105,7 @@ Future<String> _getSpattack() async{
     widget.height = _getPokemonHeight();
     widget.weight = _getPokemonWeight();
     widget.pokedex_entry = _getPokedexEntry() ;
+    int selectedIndex=0;
 
     print('Height: ${widget.height}');
   print('Weight: ${widget.weight}');
@@ -128,83 +133,25 @@ Future<String> _getSpattack() async{
     final sp_defencedata=snapshot.data![7];
     final sp_attackdata=snapshot.data![8];
     List <String> bar_data=[hpdata,speeddata,defencedata,attackdata,sp_defencedata,sp_attackdata];
+    var selectedIndex=0;
     
-    var _currentIndex;
+   
     return Scaffold(
       backgroundColor: widget.color,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: widget.color,
         elevation: 0.0,
         title: Text("Pokédex"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Stack(
-            
-            children: [
-              Container(
-                height: 140.0,
-                decoration: new BoxDecoration(
-                color: widget.color,
-                boxShadow: [
-                  new BoxShadow(blurRadius: 20.0)
-                ],
-                borderRadius: new BorderRadius.vertical(
-                bottom: new Radius.elliptical(
-                  MediaQuery.of(context).size.width, 100.0)),
-                ),
-              ),
+          child:
               Column(
                 children: [
-                  Center(
-                    child: CircleAvatar(
-                        backgroundColor: widget.color,
-                        backgroundImage: NetworkImage(widget.imageURL),
-                        radius: 65,
-                    ),
-                  ),
+                  BasicInfo(id: widget.id, imageURL: widget.imageURL, name: widget.name, type1: widget.type1, type2: widget.type2, color: widget.color),
                   SizedBox(height: 30,),
-                  Center(child: Text(widget.name.toUpperCase() ,style:TextStyle(fontWeight: FontWeight.bold ,fontSize: 25,color: Colors.black)),),
-                  SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xFF3366FF), // Blue color
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        child: Text(
-                          widget.type1,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 30),
-                      widget.type2 != '0'
-                      ? Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xFF33CC99), // Green color
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        child: Text(
-                          widget.type2,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                      )
-                      : SizedBox(),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
+                 
                   Card(
                     elevation: 5.0,
                     color: Colors.white,
@@ -350,7 +297,7 @@ Future<String> _getSpattack() async{
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, int index) {
                         
-                        return StatsBar(statisticMetric: data[index]['name'], max_metric_val: 1.0, matric_val: data[index]['is_hidden'] == 1 ? 1.0 : 0.5 ,
+                        return StatsBar(statisticMetric: data[index]['name'], max_metric_val: 1.0, matric_val: data[index]['is_hidden'] == 0 ? 1.0 : 0.5 ,
                          color: widget.color,abilities: true, abilities_description:data[index]['description'] );
                       }
                       
@@ -365,12 +312,13 @@ Future<String> _getSpattack() async{
                   SizedBox(height: 20,),
 
                 ],
-            )],
-          ),
+            ),
+            
+          
+        
         ),
       ),
- 
-
+      bottomNavigationBar: Bottom_navigation_bar(id: widget.id, imageURL: widget.imageURL, name: widget.name, type1: widget.type1, type2: widget.type2, color: widget.color,selectedIndex: 1,)
     );
     } else {
         return CircularProgressIndicator();

@@ -10,8 +10,33 @@ import 'package:pokedex/pages/Pokemontypes.dart';
 
 
 class HomeWidget extends StatefulWidget {
-  const HomeWidget({Key? key}) : super(key: key);
-  
+  static String Name = '';
+  static String imageURL='';
+  static String id = '';
+  static int type1 =0;
+  static int type2 = 0;
+  void setImageUrl(String img){
+    imageURL = imageURL;
+
+  }
+
+
+  void setid(String i){
+    id = i;
+  }
+  void setname(String n){
+    Name = n;
+
+  }
+  void settype1(int t1){
+    type1 = t1;
+  }
+  void settype2(int t2){
+    type2 = t2;
+  }
+
+
+ 
 
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
@@ -384,6 +409,11 @@ Padding(
                       if (type2 == null) {
                         type2 = 0;
                       }
+                      widget.setname(filteredData[index]['name'].toString()); 
+                     widget.setid(filteredData[index]['pokedex_number'].toString());
+                     widget.setImageUrl(filteredData[index]['image_url'].toString());
+                      widget.settype1(filteredData[index]['type1']);
+                      widget.settype2(type2);
                       return MyPokemonCard(
                         name: filteredData[index]['name'].toString(),
                         id: filteredData[index]['pokedex_number'].toString(),
