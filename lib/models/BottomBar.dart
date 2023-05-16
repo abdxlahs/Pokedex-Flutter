@@ -73,12 +73,12 @@ class _Bottom_navigation_barState extends State<Bottom_navigation_bar> {
             activeColor: Colors.amber,
             inactiveColor: Colors.red,
           ),
-          BarItem(
-            icon: Icons.search_rounded,
-            title: 'Search',
-            activeColor: Colors.red,
-            inactiveColor: Colors.green,
-          ),
+          // BarItem(
+          //   icon: Icons.search_rounded,
+          //   title: 'Search',
+          //   activeColor: Colors.red,
+          //   inactiveColor: Colors.green,
+          // ),
          /// Add more BarItem if you want
         ],
       ),
