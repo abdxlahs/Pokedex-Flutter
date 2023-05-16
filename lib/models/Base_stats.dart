@@ -48,44 +48,37 @@ Future<String> _getHp() async{
       var temp = await DatabaseHelper.instance.customQuery('SELECT hp FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["hp"].toString();
   }
-
-  Future<String> _getSpeed() async{  
+Future<String> _getSpeed() async{  
       var temp = await DatabaseHelper.instance.customQuery('SELECT speed FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["speed"].toString();
   }
-
-  Future<String> _getdefence() async{  
+Future<String> _getdefence() async{  
       var temp = await DatabaseHelper.instance.customQuery('SELECT defence FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["defence"].toString();
   }
-
-  Future<String> _getattack() async{  
+Future<String> _getattack() async{  
       var temp = await DatabaseHelper.instance.customQuery('SELECT attack FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["attack"].toString();
   }
-
 Future<String> _getSpadefence() async{  
       var temp = await DatabaseHelper.instance.customQuery('SELECT sp_defence FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["sp_defence"].toString();
   }
-
 Future<String> _getSpattack() async{  
       var temp = await DatabaseHelper.instance.customQuery('SELECT sp_attack FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["sp_attack"].toString();
   }
-
-  Future<String> _getPokedexEntry() async{  
+Future<String> _getPokedexEntry() async{  
       var temp = await DatabaseHelper.instance.customQuery('SELECT pokedex_entry FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["pokedex_entry"].toString();
     
   }
-
-  Future<String> _getPokemonHeight() async{  
+Future<String> _getPokemonHeight() async{  
       var temp = await DatabaseHelper.instance.customQuery('SELECT height FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["height"].toString();
     
   }
-  Future<String> _getPokemonWeight() async{  
+Future<String> _getPokemonWeight() async{  
       var temp = await DatabaseHelper.instance.customQuery('SELECT weight FROM Pokemon where id = "${widget.id}" ');
       return temp[0]["weight"].toString();
     
@@ -167,10 +160,11 @@ Future<String> _getSpattack() async{
                             Text(
                               pokedexEntry,
                               style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black
-                              ),
+                                      fontSize: 18,
+                                      fontFamily: 'Oswald',
+                                      fontWeight: FontWeight.bold,  
+                                      color: Colors.grey[800]
+                                      ),
                             ),
                             SizedBox(height: 10),
                             Row(
@@ -238,10 +232,11 @@ Future<String> _getSpattack() async{
                     child: Text(
                       "Base Statistics".toUpperCase(),
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 25,
-                      ),
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+                color: Colors.grey[800],
+                fontSize: 25
+                ),
                     ),
                   ),
                   SizedBox(height: 15,),
@@ -269,10 +264,11 @@ Future<String> _getSpattack() async{
                     child: Text(
                       "Abilities".toUpperCase(),
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 25,
-                      ),
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+                color: Colors.grey[800],
+                fontSize: 25
+                ),
                     ),
                   ),
 
@@ -300,7 +296,6 @@ Future<String> _getSpattack() async{
                         return StatsBar(statisticMetric: data[index]['name'], max_metric_val: 1.0, matric_val: data[index]['is_hidden'] == 0 ? 1.0 : 0.5 ,
                          color: widget.color,abilities: true, abilities_description:data[index]['description'] );
                       }
-                      
                                       );
                                     } else {
                                       return Center(child: CircularProgressIndicator());

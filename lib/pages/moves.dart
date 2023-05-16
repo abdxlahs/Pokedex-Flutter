@@ -4,10 +4,6 @@ import '../models/basic_info.dart';
 import '../models/database_helper.dart';
 import 'home/home_widget.dart';
 
-
-
-
-
 class Moves extends StatefulWidget {
   String id = HomeWidget.id ;
   String imageURL;

@@ -34,7 +34,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
     
   }
 
-  Future<String> _getStatsVal() async{
+Future<String> _getStatsVal() async{
     if(widget.statistic_val!=''){
       String? val=widget.statistic_val;
       var temp = await DatabaseHelper.instance.customQuery('SELECT "${widget.statistic_val}" FROM Pokemon where name = "${widget.name}" ');
@@ -42,64 +42,59 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
     }
     return '0';
   }
- 
-  Future<String> _getType() async {
+Future<String> _getType() async {
     var temp = await DatabaseHelper.instance.customQueryWithArgs("select name from Types where id = ?", [widget.type]);
     return temp[0]["name"].toString();
   }
-
-  Future<String> _getsecondType() async {
+Future<String> _getsecondType() async {
     if(widget.type2!=0){
     var temp = await DatabaseHelper.instance.customQueryWithArgs("select name from Types where id = ?", [widget.type2]);
     return temp[0]["name"].toString();
     }
     return '0';
   }
-
-
-
-  Color getAvatarColor(String typeName) {
-    switch (typeName) {
-      case 'fire':
-      return Color(0xFFFF5722-0x2);
+Color getAvatarColor(String typeName) {
+  switch (typeName) {
+    case 'fire':
+      return Color(0xFFF46D5E);
     case 'water':
-      return Color(0xFF2196F3);
+      return Color(0xFF76BDFE);
     case 'grass':
-      return Color(0xFF4CAF50);
+      return Color(0xFF67C157);
     case 'electric':
-      return Color(0xFFFFEB3B);
+      return Color(0xFFFBC02D);
     case 'psychic':
-      return Color(0xFFF44336);
+      return Color(0xFFF7639A);
     case 'dragon':
-      return Color(0xFF673AB7);
+      return Color(0xFF7062D1);
     case 'normal':
-      return Color(0xFF9E9E9E);
+      return Color(0xFFA8A77A);
     case 'fighting':
-      return Color(0xFFD84315);
+      return Color(0xFFC22E28);
     case 'flying':
-      return Color(0xFF90CAF9);
+      return Color(0xFFA891EC);
     case 'poison':
-      return Color(0xFF9C27B0);
+      return Color(0xFFA33EA1);
     case 'ground':
-      return Color(0xFF795548);
+      return Color(0xFFE2BF65);
     case 'rock':
-      return Color(0xFF607D8B);
+      return Color(0xFFB69E31);
     case 'bug':
-      return Color(0xFF8BC34A);
+      return Color(0xFFA7B723);
     case 'ghost':
-      return Color(0xFF7B1FA2);
+      return Color(0xFF735797);
     case 'steel':
-      return Color(0xFF9E9E9E);
+      return Color(0xFFB7B9D0);
     case 'fairy':
-      return Color(0xFFF48FB1);
+      return Color(0xFFD685AD);
     case 'dark':
-      return Color(0xFF212121);
+      return Color(0xFF735447);
     case 'ice':
-      return Color(0xFF80D8FF);
+      return Color(0xFF9AD6DF);
     default:
-      return Color(0xFFFFCB05);
-    }
+      return Colors.grey;
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +107,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
         }
         final typeName = snapshot.data![0];
         final type2Name = snapshot.data![1];
-        final statistic_val_result=snapshot.data![2];
+        final statistic_val_result = snapshot.data![2];
         return Container(
           width: double.infinity,
           height: 300,
@@ -147,7 +142,10 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                     alignment:Alignment.topLeft,
                    child: Text(
                       '#'+widget.id,
-                      style: TextStyle(fontSize: 20.0,color: Colors.white),
+                      style: TextStyle(
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+            ),
                     )
                     ),
                 SizedBox(width: 200,),
@@ -162,23 +160,24 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                         ),
                         child: Text(
                           statistic_val_result,
-                          style: TextStyle(fontSize: 20.0, color: Colors.white),
+                          style: TextStyle(fontSize: 20.0, color:Colors.grey[800]),
                         ),
                       )
                     : SizedBox(), // Replace Container() with SizedBox()
 ),
-
-
                     Align(
                     alignment:Alignment.topLeft,
                    child: Text(
                       '${widget.statistic_val}',
-                      style: TextStyle(fontSize: 20.0,color: Colors.white),
+                      style: TextStyle(
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+                color: Colors.grey[800]
+                ),
                     )
                     ),
               ],
         ),
-                    
                     Padding(
                       padding: EdgeInsets.only(top:0.5),
                         child: CircleAvatar(
@@ -191,18 +190,23 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                     padding:EdgeInsets.only(top:15),
                      child: Text(
                       '${widget.name.toUpperCase()}',
-                      style: TextStyle(fontSize: 20.0,color: Colors.white,fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+                color: Colors.grey[800],
+                fontSize: 20,
+                ),
                     )),
                     SizedBox(height: 20.0),
                     Padding(
                       padding: EdgeInsets.only(left: 50),
-                      child: Row(children: [
-                    
+                      child: Row(
+                        children: [
                         Container(
                         padding:type2Name!='0'? EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.1):EdgeInsets.symmetric(horizontal: 120.0, vertical: 0.1),
                         decoration: BoxDecoration(
                           border: Border.all(
-                          color:  Colors.white,
+                          color: Colors.grey,
                           width: 2.0,
                           ),
                           color: getAvatarColor(typeName), // Change this to the background color you want
@@ -210,7 +214,11 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                          
                         child : Text(
                         (typeName ),
-                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        style: TextStyle(
+                          fontFamily: 'Oswald',
+                          fontWeight: FontWeight.bold,  
+                          color: Colors.grey[800]
+                          ),
                       ),
                       ),
                     
@@ -220,7 +228,7 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                           padding: type2Name!='0'? EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.1):EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                           decoration: BoxDecoration(
                             border: Border.all(
-                            color: type2Name!='0'? Colors.white : getAvatarColor(typeName),
+                            color: type2Name!='0'? Colors.grey : getAvatarColor(typeName),
                             width: 2.0,
                             ),
                             color: getAvatarColor(typeName), // Change this to the background color you want
@@ -228,8 +236,13 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
                            
                           child : Text(
                           (type2Name!='0'?type2Name:'' ),
-                          style: TextStyle(fontSize: 16.0, color: Colors.white),
-                                          ),),
+                          style: TextStyle(
+                                  fontFamily: 'Oswald',
+                                  fontWeight: FontWeight.bold,  
+                                  color: Colors.grey[800]
+                                  ),
+                                          ),
+                                          ),
                         ),
                       ],
                       ),
@@ -240,9 +253,6 @@ class _MyPokemonCardState extends State<MyPokemonCard> {
         ),
           ),          
         );
-      
-       
-
       } else {
         return CircularProgressIndicator();
       }

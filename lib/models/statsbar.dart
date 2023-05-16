@@ -48,8 +48,10 @@ class _StatsBarState extends State<StatsBar> {
       center: Text(
         "${widget.statisticMetric}: ${widget.matric_val.toString()}",
         style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+                color: Colors.grey[800]
+                ),
       ),
       progressColor: widget.color,
       barRadius: Radius.circular(20)
@@ -62,8 +64,10 @@ class _StatsBarState extends State<StatsBar> {
       center: Text(
        widget.matric_val == 1 ? "${widget.statisticMetric}" : "${"Hidden: " +"\t\t\t\t"+widget.statisticMetric+"\t\t\t\t\t\t"  }" ,
         style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+                color: Colors.grey[800]
+                ),
       ),
       progressColor: widget.color,
       barRadius: Radius.circular(20),
@@ -85,10 +89,10 @@ class _StatsBarState extends State<StatsBar> {
           title: Text(
             widget.abilities_description,
             style: TextStyle(
-              color: Colors.black,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w500,
-            ),
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+                color: Colors.grey[800]
+                ),
           ),
         ),
       ],

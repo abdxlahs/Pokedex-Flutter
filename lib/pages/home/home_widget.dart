@@ -35,9 +35,6 @@ class HomeWidget extends StatefulWidget {
     type2 = t2;
   }
 
-
- 
-
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
 }
@@ -71,48 +68,50 @@ class _HomeWidgetState extends State<HomeWidget> {
         this.typename.add(row['name']);
   }
   }
-  Color getAvatarColor(String typeName) {
-    switch (typeName) {
-      case 'fire':
-      return Color(0xFFFF5722-0x2);
+
+
+Color getAvatarColor(String typeName) {
+  switch (typeName) {
+    case 'fire':
+      return Color(0xFFF46D5E);
     case 'water':
-      return Color(0xFF2196F3);
+      return Color(0xFF76BDFE);
     case 'grass':
-      return Color(0xFF4CAF50);
+      return Color(0xFF67C157);
     case 'electric':
-      return Color(0xFFFFEB3B);
+      return Color(0xFFF8D030);
     case 'psychic':
-      return Color(0xFFF44336);
+      return Color(0xFFF7639A);
     case 'dragon':
-      return Color(0xFF673AB7);
+      return Color(0xFF7062D1);
     case 'normal':
-      return Color(0xFF9E9E9E);
+      return Color(0xFFA8A77A);
     case 'fighting':
-      return Color(0xFFD84315);
+      return Color(0xFFC22E28);
     case 'flying':
-      return Color(0xFF90CAF9);
+      return Color(0xFFA891EC);
     case 'poison':
-      return Color(0xFF9C27B0);
+      return Color(0xFFA33EA1);
     case 'ground':
-      return Color(0xFF795548);
+      return Color(0xFFE2BF65);
     case 'rock':
-      return Color(0xFF607D8B);
+      return Color(0xFFB69E31);
     case 'bug':
-      return Color(0xFF8BC34A);
+      return Color(0xFFA7B723);
     case 'ghost':
-      return Color(0xFF7B1FA2);
+      return Color(0xFF735797);
     case 'steel':
-      return Color(0xFF9E9E9E);
+      return Color(0xFFB7B9D0);
     case 'fairy':
-      return Color(0xFFF48FB1);
+      return Color(0xFFD685AD);
     case 'dark':
-      return Color(0xFF212121);
+      return Color(0xFF735447);
     case 'ice':
-      return Color(0xFF80D8FF);
+      return Color(0xFF9AD6DF);
     default:
-      return Color(0xFFFFCB05);
-    }
+      return Colors.grey;
   }
+}
   void settingModalBottomSheet(context,List<String> typename){
     showModalBottomSheet(
       context: context,
@@ -291,7 +290,11 @@ class _HomeWidgetState extends State<HomeWidget> {
       decoration: InputDecoration(
         fillColor: Colors.black,
         hintText: 'Search Pokèmon by name',
-        hintStyle: TextStyle(color: Colors.grey),
+        hintStyle:TextStyle(
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+                
+            ),
         contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
@@ -331,10 +334,10 @@ SizedBox(height: 10),
     
   child: Text(
                 'Sort by types',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+              style: TextStyle(
+                fontFamily: 'Oswald',
+                fontWeight: FontWeight.bold,  
+            ),
               ),
             ),
 
@@ -371,10 +374,10 @@ Padding(
   
                   'Sort by Statistics',
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-  
+                  fontFamily: 'Oswald',
+                  fontWeight: FontWeight.bold,
+                  
+                ),
                 ),
   
               ),
