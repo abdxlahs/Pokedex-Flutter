@@ -26,11 +26,11 @@ It is a complete app for scrapping data from API and storing it in Database
 
 ## SCREENSHOT FROM APP
 
-![Untitled design](https://github.com/abdxlahs/Pokedex/assets/109152435/9e7f4c09-b6f4-4515-898a-62593ceb538a)
+![Untitled design](https://github.com/abdxlahs/Pokedex-Flutter/assets/109152435/eb39e8f5-9a26-4c7d-9e7c-a6abde867f85)
 
 ### SCHEMA FOR POKEDEX DATABASE
 
-[Schema for Pokedex](https://github.com/abdxlahs/Pokedex/files/12164597/__dynobird.com__2023-07-25_23_20_16.pdf)
+[database schema](https://github.com/abdxlahs/Pokedex-Flutter/files/12165332/__dynobird.com__2023-07-25_23_20_16.pdf)
 
     
 ## IMPORTANT:
