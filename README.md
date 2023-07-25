@@ -26,6 +26,7 @@ It is a complete app for scrapping data from API and storing it in Database
 
 ## SCREENSHOT FROM APP
 
+![screen1,2](https://github.com/abdxlahs/Pokedex/assets/109152435/5dc5eff7-aae9-4363-85e1-00662c3ac883)
 
 
 
