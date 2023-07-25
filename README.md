@@ -26,6 +26,17 @@ It is a complete app for scrapping data from API and storing it in Database
 
 ## SCREENSHOT FROM APP
 
+![Screenshot_20230725-213239](https://github.com/abdxlahs/Pokedex/assets/109152435/db6ef455-b2d9-4d0e-a3a7-be47a31cbc3b)
+![Screenshot_20230725-213547](https://github.com/abdxlahs/Pokedex/assets/109152435/cf8aa4d6-cb0b-4cca-a0d4-037e1461b51a)
+![Screenshot_20230725-213558](https://github.com/abdxlahs/Pokedex/assets/109152435/b5193989-1726-4be1-a628-ffb1a6faf0ec)
+![Screenshot_20230725-213603](https://github.com/abdxlahs/Pokedex/assets/109152435/689c17f6-6cfd-46ef-8b85-078ac73b2b13)
+![Screenshot_20230725-213613](https://github.com/abdxlahs/Pokedex/assets/109152435/6a577287-c1d8-42eb-a77e-97b8d223b058)
+![Screenshot_20230725-213620](https://github.com/abdxlahs/Pokedex/assets/109152435/87dfe291-c43b-40eb-b43c-9db58d6fdbe0)
+![Screenshot_20230725-213631](https://github.com/abdxlahs/Pokedex/assets/109152435/716728c1-fcf2-4017-8608-486f725809dc)
+![Screenshot_20230725-213638](https://github.com/abdxlahs/Pokedex/assets/109152435/18c018f6-fe3f-4a18-ade5-55120d446b26)
+![Screenshot_20230725-213655](https://github.com/abdxlahs/Pokedex/assets/109152435/7fc6b0ed-e91c-440c-8bd8-4d1a28743e06)
+
+
 
     
 ## IMPORTANT:
