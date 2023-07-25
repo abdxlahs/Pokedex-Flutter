@@ -28,7 +28,9 @@ It is a complete app for scrapping data from API and storing it in Database
 
 ![Untitled design](https://github.com/abdxlahs/Pokedex/assets/109152435/9e7f4c09-b6f4-4515-898a-62593ceb538a)
 
+### SCHEMA FOR POKEDEX DATABASE
 
+[Schema for Pokedex](https://github.com/abdxlahs/Pokedex/files/12164597/__dynobird.com__2023-07-25_23_20_16.pdf)
 
     
 ## IMPORTANT:
