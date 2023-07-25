@@ -1,6 +1,6 @@
 # Pokedex-Flutter
 
-It is a complete Pokedex App developed over Poke Api with Flutter. It was my Course project for the **Database management system(DBMS)** 
+It is a complete Pokedex App developed over [Poke Api](https://pokeapi.co/), with Flutter. It was my Course project for the **Database management system(DBMS)** 
 It is a complete app for scrapping data from API and storing it in Database
 
 ## FUNCTIONALITIES:
