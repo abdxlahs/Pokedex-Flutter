@@ -26,7 +26,7 @@ It is a complete app for scrapping data from API and storing it in Database
 
 ## SCREENSHOT FROM APP
 
-![Alt text]([http://full/path/to/img.jpg](https://drive.google.com/file/d/1wJE6J3Hos0CroKOO0xrAVNbckpmnqedo/view?usp=drive_link) "Optional title")
+
     
 ## IMPORTANT:
 
